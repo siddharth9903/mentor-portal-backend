@@ -1,7 +1,7 @@
 const express = require('express');
-const dotenv=require('dotenv')
-const connectDb=require('./config/db')
-
+const dotenv = require('dotenv')
+const connectDb = require('./config/db')
+const http = require('http');
 
 dotenv.config({
     path: './config/config.env'
@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json([]))
 app.use(express.json({
-    extended:true
+    extended: true
 }))
 connectDb();
 
@@ -19,8 +19,8 @@ const signupLoginRoute = require('./routes/SignUpLoginroute')
 const mentorRoute = require('./routes/Mentorsroute')
 const eventRouter = require('./routes/eventRouter')
 const historyRouter = require('./routes/historyRouter')
-const resourceRouter=require('./routes/resourcesRouter')
-const blogRouter=require('./routes/blogRouter');
+const resourceRouter = require('./routes/resourcesRouter')
+const blogRouter = require('./routes/blogRouter');
 const socket = require('./lib/socket');
 
 
@@ -33,8 +33,10 @@ app.use('/rosources', resourceRouter);
 app.use('/blog', blogRouter);
 
 
-const PORT = 5000||process.env.PORT;
-app.listen(PORT,()=> {
+const server = http.createServer(app);
+
+const PORT = process.env.PORT || 5600;
+app.listen(PORT, () => {
     socket(server);
     console.log("Server is running")
 }); 
